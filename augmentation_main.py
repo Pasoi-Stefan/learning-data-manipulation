@@ -149,6 +149,9 @@ def main():
     print('Final Dev Acc: {:.4f}, Final Test Acc: {:.4f}'.format(
         100. * best_dev_acc, 100. * final_test_acc))
 
+    print("Saving classifier...", end="")
+    torch.save(classifier._model.state_dict(), './tmp/classifier_model_{}.pt'.format(time.time()))
+    print("Done")
 
 if __name__ == '__main__':
     main()
