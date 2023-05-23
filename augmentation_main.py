@@ -66,21 +66,18 @@ def _pretrain_generator(generator, train_examples):
 
         if dev_loss < best_dev_loss:
             torch.save(generator.model.state_dict(),
-                       '/tmp/generator_model_{}.pt'.format(tag))
+                       './tmp/generator_model_{}.pt'.format(tag))
             torch.save(generator.optimizer.state_dict(),
-                       '/tmp/generator_optimizer_{}.pt'.format(tag))
+                       './tmp/generator_optimizer_{}.pt'.format(tag))
             best_dev_loss = dev_loss
 
         print('Epoch {}, Dev Loss: {:.4f}; Best Dev Loss: {:.4f}'.format(
             epoch, dev_loss, best_dev_loss))
 
     generator.model.load_state_dict(
-        torch.load('/tmp/generator_model_{}.pt'.format(tag)))
+        torch.load('./tmp/generator_model_{}.pt'.format(tag)))
     generator.optimizer.load_state_dict(
-        torch.load('/tmp/generator_optimizer_{}.pt'.format(tag)))
-
-    os.remove(os.path.join('/tmp', 'generator_model_{}.pt'.format(tag)))
-    os.remove(os.path.join('/tmp', 'generator_optimizer_{}.pt'.format(tag)))
+        torch.load('./tmp/generator_optimizer_{}.pt'.format(tag)))
 
 
 def train_epoch(epoch, generator, classifier, train_examples, do_augment):
@@ -107,6 +104,7 @@ def main():
         task=args.task,
         train_num_per_class=args.train_num_per_class,
         dev_num_per_class=args.dev_num_per_class,
+        imbalance_rate=1.,
         data_seed=args.data_seed)
 
     generator = Generator(label_list=label_list, device=device)
